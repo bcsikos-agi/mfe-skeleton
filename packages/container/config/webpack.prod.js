@@ -16,7 +16,7 @@ const prodConfig = {
             name: 'container', // host name is never used
             remotes: {
                 // namespace: 'remotename@remoteaddress/remotefile'
-                'marketing': `marketing@${domain}/marketing/remoteEntry.js`
+                'marketing': `marketing@${domain}/marketing/latest/remoteEntry.js`
             },
             shared: packageJson.dependencies,
         })
