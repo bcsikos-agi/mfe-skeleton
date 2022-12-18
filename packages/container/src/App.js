@@ -4,10 +4,12 @@ import { StylesProvider, createGenerateClassName } from '@material-ui/core/style
 import Progress from './components/Progress'
 import Header from './components/Header'
 import { createBrowserHistory } from 'history'
+import { useAuth0 } from "@auth0/auth0-react";
 
 const MarketingAppLazy = lazy(() => import('./components/MarketingApp'))
 const AuthAppLazy = lazy(() => import('./components/AuthApp'))
 const DashboardAppLazy = lazy(() => import('./components/DashboardApp'))
+const PolicyViewerAppLazy = lazy(() => import('./components/PolicyViewerApp'))
 
 const generateClassName = createGenerateClassName({
     productionPrefix: 'co'
@@ -16,29 +18,38 @@ const generateClassName = createGenerateClassName({
 const history = createBrowserHistory()
 
 export default () => {
-    const [isSignedIn, setIsSignedIn] = useState(false)
+    const { loginWithRedirect, logout, user, isAuthenticated, getIdTokenClaims } = useAuth0();
 
     useEffect(() => {
-        if (isSignedIn) {
+        if (isAuthenticated) {
             history.push('/protected')
         }
-    }, [isSignedIn])
+    }, [isAuthenticated])
     return (
         <StylesProvider generateClassName={generateClassName}>
             <Router history={history}>
-                <Header isSignedIn={isSignedIn} onSignOut={() => {
-                    setIsSignedIn(false)
+                <Header isSignedIn={isAuthenticated} user={user} onSignOut={() => {
+                    logout({ returnTo: window.location.origin })
                 }} />
                 <Suspense fallback={<Progress />}>
                     <Switch>
                         <Route path="/user">
-                            <AuthAppLazy history={history} onSignIn={() => {
-                                setIsSignedIn(true)
-                            }} />
+                            <AuthAppLazy history={history}
+                                onSignIn={() => {
+                                    loginWithRedirect()
+                                }} />
                         </Route>
-                        <Route path="/protected">
-                            {!isSignedIn && <Redirect to='/' />}
-                            <DashboardAppLazy />
+                        <Route path="/domain2">
+                            {!isAuthenticated ?
+                                <Redirect to='/' />
+                                :
+                                <PolicyViewerAppLazy history={history}
+                                    getIdTokenClaims={getIdTokenClaims} />
+                            }
+                        </Route>
+                        <Route path="/vue">
+                            <DashboardAppLazy
+                                getIdTokenClaims={getIdTokenClaims} />
                         </Route>
                         <Route path="/" component={MarketingAppLazy} />
                     </Switch>

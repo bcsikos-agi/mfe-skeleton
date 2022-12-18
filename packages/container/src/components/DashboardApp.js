@@ -1,11 +1,15 @@
 import { mount } from 'dashboard/DashboardApp'
 import React, { useRef, useEffect } from 'react'
 
-export default ({ onSignIn }) => {
+export default ({ getIdTokenClaims }) => {
     const ref = useRef(null)
 
     useEffect(() => {
-        mount(ref.current)
+        mount(ref.current, {
+            // MF API downstream
+            // downstream navigation
+            getIdTokenClaims: getIdTokenClaims
+        })
     }, [])
     return <div ref={ref}></div>
 }

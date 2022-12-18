@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header({ isSignedIn, onSignOut }) {
+export default function Header({ isSignedIn, onSignOut, user }) {
   const classes = useStyles();
 
   const onClick = () => {
@@ -79,7 +79,25 @@ export default function Header({ isSignedIn, onSignOut }) {
             component={RouterLink}
             to="/"
           >
-            App
+            Domain1 MF App (Marketing)
+          </Typography>
+          <Typography
+            variant="h6"
+            color="inherit"
+            noWrap
+            component={RouterLink}
+            to="/domain2"
+          >
+            Domain2 MF App (PolicyViewer)
+          </Typography>
+          <Typography
+            variant="h6"
+            color="inherit"
+            noWrap
+            component={RouterLink}
+            to="/vue"
+          >
+            Vue MF App (Dashboard)
           </Typography>
           <Button
             color="primary"
@@ -89,7 +107,7 @@ export default function Header({ isSignedIn, onSignOut }) {
             to={isSignedIn ? '/' : '/user/signin'}
             onClick={onClick}
           >
-            {isSignedIn ? 'Logout' : 'Login'}
+            {isSignedIn ? `Hi ${user.nickname}, logout?` : 'Login'}
           </Button>
         </Toolbar>
       </AppBar>

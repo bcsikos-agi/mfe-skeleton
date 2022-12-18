@@ -6,21 +6,18 @@ const packageJson = require('./../package.json')
 const devConfig = {
     mode: 'development',
     output: {
-        publicPath: 'http://localhost:8080/'
+        publicPath: 'http://localhost:8084/'
     },
     devServer: {
-        port: 8080,
+        port: 8084,
         historyApiFallback: true
     },
     plugins: [
         new ModuleFederationPlugin({
-            name: 'container', // host name is never used
-            remotes: {
-                // local namespace: 'remotename@remoteaddress/remotefile'
-                'marketing': 'marketing@http://localhost:8081/remoteEntry.js',
-                'auth': 'auth@http://localhost:8082/remoteEntry.js',
-                'dashboard': 'dashboard@http://localhost:8083/remoteEntry.js',
-                'viewer': 'viewer@http://localhost:8084/remoteEntry.js',
+            name: 'viewer',
+            filename: 'remoteEntry.js',
+            exposes: {
+                './PolicyViewerApp': './src/bootstrap'
             },
             shared: packageJson.dependencies,
         })

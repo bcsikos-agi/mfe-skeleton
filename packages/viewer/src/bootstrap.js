@@ -10,7 +10,7 @@ const mount = (el,
         onNavigate,
         defaultHistory,
         initialPath,
-        onSignIn
+        getIdTokenClaims
     }) => {
     const history = defaultHistory || createMemoryHistory({
         initialEntries: [initialPath]
@@ -19,7 +19,9 @@ const mount = (el,
         history.listen(onNavigate)
     }
     ReactDOM.render(<App history={history}
-        onSignIn={onSignIn} />, el)
+        getIdTokenClaims={getIdTokenClaims} />
+        ,
+        el)
     return {
         // MF API upstream
         onParentNavigate({ pathname: nextPathname }) {
@@ -27,6 +29,10 @@ const mount = (el,
             if (pathname !== nextPathname) {
                 history.push(nextPathname)
             }
+        },
+        onParentogout() {
+            // do domain2 specific logout steps
+            console.log(`Logging out from Domain2 App`)
         }
     }
 }
@@ -34,7 +40,7 @@ const mount = (el,
 // If we are in development and in isolation,
 // call mount immediatly
 if (process.env.NODE_ENV === 'development') {
-    const devRoot = document.querySelector('#_auth-dev-root')
+    const devRoot = document.querySelector('#_viewer-dev-root')
     if (devRoot) {
         mount(devRoot, { defaultHistory: createBrowserHistory() })
     }
