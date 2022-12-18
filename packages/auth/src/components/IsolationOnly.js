@@ -8,10 +8,10 @@ export default function IsolationOnly() {
             <p>Supported path(s) for container</p>
             <list>
                 <li key="1">
-                    <Link to="/auth/signin">SignIn</Link>
+                    <Link to="/user/signin">SignIn</Link>
                 </li>
                 <li key="2">
-                    <Link to="/auth/signup">SignUp</Link>
+                    <Link to="/user/signup">SignUp</Link>
                 </li>
             </list>
         </>

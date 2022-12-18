@@ -15,10 +15,10 @@ export default ({ history, onSignIn }) => {
                 <Router history={history}>
                     <Switch>
                         <Route exact path="/" component={IsolationOnly} />
-                        <Route path="/auth/signin">
+                        <Route path="/user/signin">
                             <Signin onSignIn={onSignIn} />
                         </Route>
-                        <Route path="/auth/signup">
+                        <Route path="/user/signup">
                             <Signup onSignIn={onSignIn} />
                         </Route>
                     </Switch>

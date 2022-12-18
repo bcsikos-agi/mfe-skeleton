@@ -20,7 +20,7 @@ export default () => {
 
     useEffect(() => {
         if (isSignedIn) {
-            history.push('/dashboard')
+            history.push('/protected')
         }
     }, [isSignedIn])
     return (
@@ -31,12 +31,12 @@ export default () => {
                 }} />
                 <Suspense fallback={<Progress />}>
                     <Switch>
-                        <Route path="/auth">
+                        <Route path="/user">
                             <AuthAppLazy history={history} onSignIn={() => {
                                 setIsSignedIn(true)
                             }} />
                         </Route>
-                        <Route path="/dashboard">
+                        <Route path="/protected">
                             {!isSignedIn && <Redirect to='/' />}
                             <DashboardAppLazy />
                         </Route>
